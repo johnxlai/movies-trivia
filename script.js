@@ -1,5 +1,8 @@
 const movieTriviaApp = {};
-console.log(movieTriviaApp);
+movieTriviaApp.htmlElements = {};
+movieTriviaApp.functions = {};
+movieTriviaApp.cssStyling = {};
+movieTriviaApp.genreSelected;
 
 //get genre
 //api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
@@ -13,7 +16,6 @@ movieTriviaApp.getGenre = () => {
   })
     .then(function (results) {
       movieTriviaApp.displayGenre(results.genres);
-      console.log(results.genres);
     })
     .catch(function () {
       alert("broke");
@@ -21,22 +23,27 @@ movieTriviaApp.getGenre = () => {
 };
 
 //display genre buttons
-
 movieTriviaApp.displayGenre = (genres) => {
   genres.forEach((genre) => {
-    // console.log(genre);
-
     let htmlButton = `
-       <button class="${genre.name}" type="button">${genre.name}</button>
+       <button class="${genre.name} genre-button" type="button">${genre.name}</button>
     `;
 
-    movieTriviaApp.htmlElements.genreBtns.append(htmlButton);
-
-    $("");
+    movieTriviaApp.htmlElements.genreBtnsContainer.append(htmlButton);
   });
+
+  movieTriviaApp.functions.loopBtns();
 };
 
 //when user selects genre, call api choose 10 movies
+//add event listener to all the buttons and on click grab the save the value of the selected button
+movieTriviaApp.functions.loopBtns = () => {
+  // console.log(genreBtns);
+  $(".genre-button").on("click", function () {
+    movieTriviaApp.genreSelected = $(this)[0].innerText;
+    console.log(movieTriviaApp.genreSelected);
+  });
+};
 
 // display the 10 movies
 
@@ -49,8 +56,7 @@ movieTriviaApp.init = () => {
 
   //grab genre btns container
 
-  movieTriviaApp.htmlElements = {};
-  movieTriviaApp.htmlElements.genreBtns = $(".genre-btns-container");
+  movieTriviaApp.htmlElements.genreBtnsContainer = $(".genre-btns-container");
 };
 $(function () {
   movieTriviaApp.init();

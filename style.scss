@@ -1,0 +1,91 @@
+// $flickr-pink: rgba(247, 37, 133, 1);
+// $byzantine: rgba(181, 23, 158, 1);
+// $purple: rgba(114, 9, 183, 1);
+// $purple-2: rgba(86, 11, 173, 1);
+// $trypan-blue: rgba(72, 12, 168, 1);
+// $trypan-blue-2: rgba(58, 12, 163, 1);
+// $persian-blue: rgba(63, 55, 201, 1);
+// $ultramarine-blue: rgba(67, 97, 238, 1);
+// $dodger-blue: rgba(72, 149, 239, 1);
+// $vivid-sky-blue: rgba(76, 201, 240, 1);
+
+// button colors
+$primary-pink: #fe53bb;
+$secondary-yellow: #f5d300;
+$tertiary-blue: #00d4ff;
+$green: #72ff00;
+$black: #001519;
+
+// "Brand" colors
+$green: #45a049;
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: $black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+
+  // h1,
+  // h2,
+  // h3,
+  // h4,
+  // h5,
+  // h6 {
+  //   font-family: "Noto Serif", serif;
+  // }
+}
+
+// // Small devices (landscape phones, 576px and up)
+// @media (min-width: 576px) { ... }
+
+// // Medium devices (tablets, 768px and up)
+// @media (min-width: 768px) { ... }
+
+// // Large devices (desktops, 992px and up)
+// @media (min-width: 992px) { ... }
+
+// // Extra large devices (large desktops, 1200px and up)
+// @media (min-width: 1200px) { ... }
+
+h1 {
+  color: $primary-pink;
+  // text-shadow: 2px 2px 3px $secondary-yellow;
+}
+.genre-btns-container {
+  margin: 0 auto;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+
+  button {
+    border: 3px solid darken($primary-pink, 0%);
+    color: darken($primary-pink, 0%);
+    background-color: darken($primary-pink, 40%);
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin: 5px;
+
+    &:hover {
+      border-color: lighten($primary-pink, 10%);
+      color: lighten($primary-pink, 10%);
+      background-color: darken($primary-pink, 30%);
+    }
+    &:focus {
+      border-color: lighten($primary-pink, 10%);
+      color: lighten($primary-pink, 10%);
+      background-color: darken($primary-pink, 30%);
+      padding: 16px 16px;
+      outline: 0;
+      border-radius: 12px;
+    }
+  }
+}

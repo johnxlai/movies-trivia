@@ -16,7 +16,6 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-  height: 100vh;
 }
 
 h1 {
@@ -60,5 +59,22 @@ h1 {
   padding: 16px 16px;
   outline: 0;
   border-radius: 12px;
+}
+
+.movie-list-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: green;
 }
 /*# sourceMappingURL=style.css.map */

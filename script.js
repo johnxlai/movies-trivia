@@ -134,13 +134,38 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
 
   console.log(finalMovieDetails);
 
+  // loop thru array for production companies
+  const productionCompaniesArray = [];
+  //should create if statement to check if exist
+  finalMovieDetails.production_companies.forEach((productionCompany) => {
+    productionCompaniesArray.push(productionCompany.name);
+  });
+
+  //loop thru array for cast members
+  //should create if statement to check if exist
+  const movieCastsArray = [];
+  finalMovieDetails.credits.cast.forEach((cast) => {
+    movieCastsArray.push(cast.name);
+  });
+
+  //if tehty didn't make money do say ddint' make any
+  const movieRevenue = finalMovieDetails.revenue
+    ? finalMovieDetails.revenue
+    : "didnt make money";
+
   const finalMovie = `
     <div class="d-flex flex-column justify-content-center align-items-center">
-    <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="">
-      ${finalMovieDetails.original_title} , ${finalMovieDetails.runtime}, ${finalMovieDetails.production_companies},  ${finalMovieDetails.release_date}, ${finalMovieDetails.vote_average}, ${finalMovieDetails.runtime},
-      ${finalMovieDetails.revenue};
-      ;
+      <img src="https://image.tmdb.org/t/p/w300/${
+        finalMovieDetails.backdrop_path
+      }" alt="">
+        <h4>${finalMovieDetails.original_title}</h4>
+       <p>${finalMovieDetails.runtime} runtime,</p>
+       <p>Company - ${productionCompaniesArray.join(", ")}</p>
+       <p>Cast - ${movieCastsArray.join(", ")}</p>
 
+       <p> Movie Release date -  ${finalMovieDetails.release_date} </p>
+       <p>${finalMovieDetails.vote_average}</p>
+       <p>Revenue ${movieRevenue}</p>
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);

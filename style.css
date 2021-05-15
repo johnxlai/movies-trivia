@@ -53,28 +53,30 @@ h1 {
 }
 
 .genre-btns-container button:focus {
-  border-color: #fe86cf;
-  color: #fe86cf;
-  background-color: #b70170;
+  border-color: #33ddff;
+  color: #33ddff;
+  background-color: #005566;
   padding: 16px 16px;
   outline: 0;
   border-radius: 12px;
 }
 
 .movie-list-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: green;
+}
+
+.movie-list-container .movie-container {
+  padding: 16px;
+  margin: 16px;
+}
+
+.movie-list-container h3 {
+  font-size: 1rem;
+  color: #00d4ff;
 }
 /*# sourceMappingURL=style.css.map */

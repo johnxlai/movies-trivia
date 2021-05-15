@@ -1,9 +1,14 @@
 const movieTriviaApp = {};
+//keys
 movieTriviaApp.htmlElements = {};
 movieTriviaApp.functions = {};
 movieTriviaApp.cssStyling = {};
+
+//for the api
 movieTriviaApp.genreSelectedId = 12;
 movieTriviaApp.genreSelectedText = "";
+movieTriviaApp.selectedMovieTitle = "";
+movieTriviaApp.selectedMovieId = "";
 
 //get genre
 //api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
@@ -25,12 +30,27 @@ movieTriviaApp.getGenres = () => {
 //Api call for the selected genre
 movieTriviaApp.getMoviesSelectedGenre = () => {
   $.ajax({
-    url: `https://api.themoviedb.org/3/discover/movie?api_key=${movieTriviaApp.apiKey}&with_genres=${movieTriviaApp.genreSelectedId}`,
+    url: `https://api.themoviedb.org/3/discover/movie?api_key=${movieTriviaApp.apiKey}&with_genres=${movieTriviaApp.genreSelectedId}&language=en-US`,
     methond: "GET",
     dataType: "json",
   })
     .then(function (results) {
       movieTriviaApp.displayMovies(results.results);
+    })
+    .catch(function () {
+      alert("broke");
+    });
+};
+
+//api call to get movie info from the selected movie
+movieTriviaApp.getMovieInfo = () => {
+  $.ajax({
+    url: `https://api.themoviedb.org/3/movie/${movieTriviaApp.selectedMovieId}?api_key=${movieTriviaApp.apiKey}&append_to_response=credits`,
+    methond: "GET",
+    dataType: "json",
+  })
+    .then(function (results) {
+      movieTriviaApp.functions.displayFinalMovie(results);
     })
     .catch(function () {
       alert("broke");
@@ -56,36 +76,75 @@ movieTriviaApp.displayGenres = (genres) => {
 //add event listener to all the buttons and on click grab the save the value of the selected button
 movieTriviaApp.functions.loopBtns = () => {
   // console.log(genreBtns);
-  $(".genre-button").on("click", function () {
+  $(".genre-button").on("click", function (e) {
+    e.preventDefault();
     movieTriviaApp.genreSelectedId = $(this)[0].id;
     movieTriviaApp.genreSelectedText = $(this)[0].innerText;
-    console.log(
-      movieTriviaApp.genreSelectedId,
-      movieTriviaApp.genreSelectedText,
-      "loopbtns"
-    );
+    // console.log(
+    //   movieTriviaApp.genreSelectedId,
+    //   movieTriviaApp.genreSelectedText,
+    //   "loopbtns"
+    // );
+
+    //call api to get movies on the selected genre
     movieTriviaApp.getMoviesSelectedGenre();
   });
 };
 
 //display selected movies
-
 movieTriviaApp.displayMovies = (movieList) => {
+  movieTriviaApp.htmlElements.movieListContainer.empty();
   movieList.forEach((movie) => {
-    console.log(movie);
+    // console.log(movie);
 
     moviePoster = `
-          <div>
-            <h3>${movie.original_title}</h3>
-             <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
-            </div>
+          <div class="movie-container">
+            <a href="#" id="${movie.id}" class=" movie-title">
+              <h3>${movie.original_title}</h3>
+              <img src="https://image.tmdb.org/t/p/w185/${movie.poster_path}" alt="">
+             </a>
+          </div>
     `;
 
     movieTriviaApp.htmlElements.movieListContainer.append(moviePoster);
   });
+  movieTriviaApp.functions.loopMoviesLink();
 };
 
-// display the 10 movies
+// add event listenr to all movies on display, grab the title and id that is selected by the user;
+movieTriviaApp.functions.loopMoviesLink = () => {
+  $(".movie-title").on("click", function (e) {
+    e.preventDefault();
+
+    movieTriviaApp.selectedMovieTitle = $(this)[0].firstElementChild.innerText;
+    movieTriviaApp.selectedMovieId = $(this)[0].id;
+
+    console.log(
+      movieTriviaApp.selectedMovieTitle,
+      movieTriviaApp.selectedMovieId
+    );
+    //use api to get movie info with cast for the trivia
+    movieTriviaApp.getMovieInfo();
+  });
+};
+
+//show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
+movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
+  movieTriviaApp.htmlElements.movieListContainer.empty();
+
+  console.log(finalMovieDetails);
+
+  const finalMovie = `
+    <div class="d-flex flex-column justify-content-center align-items-center">
+    <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="">
+      ${finalMovieDetails.original_title} , ${finalMovieDetails.runtime}, ${finalMovieDetails.production_companies},  ${finalMovieDetails.release_date}, ${finalMovieDetails.vote_average}, ${finalMovieDetails.runtime},
+      ${finalMovieDetails.revenue};
+      ;
+
+    </div>
+  `;
+  movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
+};
 
 //user selects a movie, trivia begins
 

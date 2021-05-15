@@ -79,9 +79,9 @@ h1 {
       background-color: darken($primary-pink, 30%);
     }
     &:focus {
-      border-color: lighten($primary-pink, 10%);
-      color: lighten($primary-pink, 10%);
-      background-color: darken($primary-pink, 30%);
+      border-color: lighten($tertiary-blue, 10%);
+      color: lighten($tertiary-blue, 10%);
+      background-color: darken($tertiary-blue, 30%);
       padding: 16px 16px;
       outline: 0;
       border-radius: 12px;
@@ -90,9 +90,16 @@ h1 {
 }
 
 .movie-list-container {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: green;
+
+  .movie-container {
+    padding: 16px;
+    margin: 16px;
+  }
+
+  h3 {
+    font-size: 1rem;
+    color: $tertiary-blue;
+  }
 }

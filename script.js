@@ -37,6 +37,8 @@ movieTriviaApp.getMoviesSelectedGenre = () => {
     });
 };
 
+//https://developers.themoviedb.org/3/discover/movie-discover
+// https://www.themoviedb.org/talk/5bf18ceec3a36818bb06991d
 //display genre buttons
 movieTriviaApp.displayGenres = (genres) => {
   genres.forEach((genre) => {
@@ -72,12 +74,13 @@ movieTriviaApp.displayMovies = (movieList) => {
   movieList.forEach((movie) => {
     console.log(movie);
 
-    let moviePoster = `
+    moviePoster = `
           <div>
             <h3>${movie.original_title}</h3>
-             <img src="" alt="">
+             <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
             </div>
     `;
+
     movieTriviaApp.htmlElements.movieListContainer.append(moviePoster);
   });
 };

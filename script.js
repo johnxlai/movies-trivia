@@ -10,6 +10,9 @@ movieTriviaApp.genreSelectedText = "";
 movieTriviaApp.selectedMovieTitle = "";
 movieTriviaApp.selectedMovieId = "";
 
+//counter
+movieTriviaApp.pointsCounter = 0;
+
 //list of questions
 movieTriviaApp.listOfQuestions = [
   "year",
@@ -188,12 +191,41 @@ movieTriviaApp.functions.startTrivia = () => {
     movieTriviaApp.listOfQuestions[0]
   );
 
-  movieTriviaApp.arrayOfAnswer = movieTriviaApp.htmlElements.userInput.val();
+  movieTriviaApp.functions.formSubmit();
 };
 
 //added event lister to form
+movieTriviaApp.functions.formSubmit = () => {
+  movieTriviaApp.htmlElements.userInputForm.on("submit", function (e) {
+    e.preventDefault();
 
-//
+    movieTriviaApp.arrayOfAnswer = movieTriviaApp.htmlElements.userInput.val();
+
+    if (!movieTriviaApp.arrayOfAnswer) {
+      alert("input something fam");
+    } else {
+      console.log(movieTriviaApp.arrayOfAnswer);
+      movieTriviaApp.functions.checkAnswer();
+    }
+  });
+};
+//check if user input is correct
+movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
+  if (finalMovieDetails.runtime === movieTriviaApp.arrayOfAnswer) {
+    console.log("yes ur correct");
+
+    movieTriviaApp.pointsCounter++;
+  } else {
+    console.log("nah fam");
+  }
+
+  const result = `
+  ${movieTriviaApp.pointsCounter} points so far
+  );
+  `;
+  movieTriviaApp.htmlElements.pointsCounterDisplay.append(result);
+  //show points
+};
 
 movieTriviaApp.init = () => {
   movieTriviaApp.getGenres();
@@ -204,6 +236,8 @@ movieTriviaApp.init = () => {
   movieTriviaApp.htmlElements.movieListContainer = $(".movie-list-container");
   movieTriviaApp.htmlElements.questionLabel = $("#question");
   movieTriviaApp.htmlElements.userInput = $("#userInput");
+  movieTriviaApp.htmlElements.userInputForm = $("#userInputForm");
+  movieTriviaApp.htmlElements.pointsCounterDisplay = $(".pointsCounter");
 };
 $(function () {
   movieTriviaApp.init();

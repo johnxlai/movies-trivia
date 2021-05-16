@@ -10,6 +10,16 @@ movieTriviaApp.genreSelectedText = "";
 movieTriviaApp.selectedMovieTitle = "";
 movieTriviaApp.selectedMovieId = "";
 
+//list of questions
+movieTriviaApp.listOfQuestions = [
+  "year",
+  "runtime",
+  "vote avger",
+  "cast",
+  "reverue",
+];
+movieTriviaApp.arrayOfAnswer = [];
+
 //get genre
 //api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
 movieTriviaApp.apiKey = "3c9a01ae287e63be5b9af537e6b1b3e3";
@@ -169,9 +179,19 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
+  movieTriviaApp.functions.startTrivia();
 };
 
 //user selects a movie, trivia begins
+movieTriviaApp.functions.startTrivia = () => {
+  movieTriviaApp.htmlElements.questionLabel.text(
+    movieTriviaApp.listOfQuestions[0]
+  );
+
+  movieTriviaApp.arrayOfAnswer = movieTriviaApp.htmlElements.userInput.val();
+};
+
+//added event lister to form
 
 //
 
@@ -182,6 +202,8 @@ movieTriviaApp.init = () => {
 
   movieTriviaApp.htmlElements.genreBtnsContainer = $(".genre-btns-container");
   movieTriviaApp.htmlElements.movieListContainer = $(".movie-list-container");
+  movieTriviaApp.htmlElements.questionLabel = $("#question");
+  movieTriviaApp.htmlElements.userInput = $("#userInput");
 };
 $(function () {
   movieTriviaApp.init();

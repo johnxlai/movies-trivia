@@ -153,6 +153,11 @@ movieTriviaApp.questionInArray = 0;
 movieTriviaApp.functions.showNextQuestion = () => {
   //set focus to input
   movieTriviaApp.functions.setFocusToInput();
+
+  //if it is the last quesition in the array
+  if (movieTriviaApp.questionInArray.length - 1) {
+    console.log("last item");
+  }
   //show next question
   movieTriviaApp.htmlElements.questionLabel.text(
     movieTriviaApp.listOfQuestions[movieTriviaApp.questionInArray]
@@ -232,11 +237,17 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
   });
 };
 
+//Check if user input is a string
+movieTriviaApp.functions.checkIfInputIsAString = (formInput) => {
+  if (typeof formInput === "string") {
+    return true;
+  }
+};
+
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   // clear user input
   movieTriviaApp.htmlElements.userInput.val("");
-
   let gameOver = false;
 
   // first question which Year was the movie released?
@@ -306,11 +317,19 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       }
       //check user input,covert user input to boolean, yes or no
       let userAnswerYesOrNo = "";
-      if (movieTriviaApp.userAnswer.toLowerCase() === "yes") {
-        userAnswerYesOrNo = true;
-      }
-      if (movieTriviaApp.userAnswer.toLowerCase() === "no") {
-        userAnswerYesOrNo = false;
+      if (
+        movieTriviaApp.functions.checkIfInputIsAString(
+          movieTriviaApp.userAnswer
+        )
+      ) {
+        if (movieTriviaApp.userAnswer.toLowerCase() === "yes") {
+          userAnswerYesOrNo = true;
+        }
+        if (movieTriviaApp.userAnswer.toLowerCase() === "no") {
+          userAnswerYesOrNo = false;
+        }
+      } else {
+        console.log("user input not a string");
       }
 
       //Check QUESTION VS ANSWER
@@ -333,13 +352,21 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       //join all the casts into an array
       movieCastsArray.join(", ");
 
-      //check if user input is in the array
-      if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
-        console.log("yes ur correct");
-        movieTriviaApp.pointsCounter++;
-      } else {
-        console.log("nah fam");
+      //check if user input is inside the array
+
+      if (
+        movieTriviaApp.functions.checkIfInputIsAString(
+          movieTriviaApp.userAnswer
+        )
+      ) {
+        if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
+          console.log("yes ur correct");
+          movieTriviaApp.pointsCounter++;
+        } else {
+          console.log("nah fam");
+        }
       }
+      console.log("nah fam");
 
       break;
 
@@ -355,27 +382,37 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       //join all the companies into an array
       productionCompaniesArray.join(", ");
 
-      //check if user input is in the array
       if (
-        productionCompaniesArray.includes(
-          movieTriviaApp.userAnswer.toLowerCase()
+        movieTriviaApp.functions.checkIfInputIsAString(
+          movieTriviaApp.userAnswer
         )
       ) {
-        console.log("yes ur correct");
-        movieTriviaApp.pointsCounter++;
-      } else {
-        console.log("nah fam");
+        //check if user input is in the array
+        if (
+          productionCompaniesArray.includes(
+            movieTriviaApp.userAnswer.toLowerCase()
+          )
+        ) {
+          console.log("yes ur correct");
+          movieTriviaApp.pointsCounter++;
+        } else {
+          console.log("nah fam");
+        }
       }
+      console.log("nah fam");
 
-      break;
-    default:
-      //when game is over show this.
+      //// SET GAME OVER
       console.log("game over");
       gameOver = true;
       movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
          Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}
       `);
       movieTriviaApp.htmlElements.userInputForm.hide();
+      break;
+
+    default:
+      //when game is over show this.
+      console.log("something is not right in the switch statement");
       break;
   }
 

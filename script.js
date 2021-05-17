@@ -237,38 +237,27 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
   });
 };
 
-//Check if user input is a string
-movieTriviaApp.functions.checkIfInputIsAString = (formInput) => {
-  if (typeof formInput === "string") {
-    return true;
-  }
-};
-
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   // clear user input
   movieTriviaApp.htmlElements.userInput.val("");
+  //change to game over on last question
   let gameOver = false;
 
-  // first question which Year was the movie released?
-  // parseInt convert final movie release date just the year
-  finalMovieDetails.release_date = parseInt(finalMovieDetails.release_date);
-
   console.log(movieTriviaApp.userAnswer);
-
-  //check if user input is a number, if it is convert to number so it will match answer
-  if (Number(movieTriviaApp.userAnswer)) {
-    movieTriviaApp.userAnswer = parseFloat(movieTriviaApp.userAnswer);
-  }
 
   // const questionIndexNumber = 0;
   switch (movieTriviaApp.questionInArray) {
     //Which Year was the movie released?
-
     case 0:
-      console.log(finalMovieDetails.release_date, movieTriviaApp.userAnswer);
+      // parseInt convert final movie release date just the year
+      //finalMovie Grab Year and switch it to switch so it would match user input
+      let movieReleaseYear = parseInt(
+        finalMovieDetails.release_date
+      ).toString();
+
       // Check QUESTION VS ANSWER
-      if (finalMovieDetails.release_date === movieTriviaApp.userAnswer) {
+      if (movieReleaseYear === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
       } else {
@@ -280,22 +269,21 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     //How long was the movie?
     case 1:
       //Check QUESTION VS ANSWER
-      if (finalMovieDetails.runtime === movieTriviaApp.userAnswer) {
+      // console.log(finalMovieDetails.runtime, movieTriviaApp.userAnswer);
+      if (finalMovieDetails.runtime.toString() === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
       } else {
         console.log("nah fam");
       }
-      // console.log(finalMovieDetails.runtime, movieTriviaApp.userAnswer);
       break;
 
     // What was the vote average by user? - out of 10
     case 2:
-      console.log("yelo question 3");
-      //third question Vote Avger ( Change to round up or down  on nnumber)
+      //Round Up or Down on vote and covert number to string to match user
       finalMovieDetails.vote_average = Math.round(
         finalMovieDetails.vote_average
-      );
+      ).toString();
 
       //Check QUESTION VS ANSWER
       if (finalMovieDetails.vote_average === movieTriviaApp.userAnswer) {
@@ -309,28 +297,20 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
 
     // Belongs to a collection
     case 3:
-      console.log("yelo question 4");
       //check if the movie belongs to a collection, if so set as var as true;
       let movieSeriesTrueOrFalse = false;
+
       if (finalMovieDetails.belongs_to_collection) {
         movieSeriesTrueOrFalse = true;
       }
       //check user input,covert user input to boolean, yes or no
       let userAnswerYesOrNo = "";
-      if (
-        movieTriviaApp.functions.checkIfInputIsAString(
-          movieTriviaApp.userAnswer
-        )
-      ) {
-        if (movieTriviaApp.userAnswer.toLowerCase() === "yes") {
-          userAnswerYesOrNo = true;
-        }
-        if (movieTriviaApp.userAnswer.toLowerCase() === "no") {
-          userAnswerYesOrNo = false;
-        }
-      } else {
-        console.log("user input not a string");
-      }
+
+      if (movieTriviaApp.userAnswer.toLowerCase() === "yes")
+        userAnswerYesOrNo = true;
+
+      if (movieTriviaApp.userAnswer.toLowerCase() === "no")
+        userAnswerYesOrNo = false;
 
       //Check QUESTION VS ANSWER
       if (movieSeriesTrueOrFalse === userAnswerYesOrNo) {
@@ -343,7 +323,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
     // Name one cast member
     case 4:
-      console.log("Cast Member");
       const movieCastsArray = [];
       finalMovieDetails.credits.cast.forEach((cast) => {
         movieCastsArray.push(cast.name.toLowerCase());
@@ -351,22 +330,14 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
 
       //join all the casts into an array
       movieCastsArray.join(", ");
-
       //check if user input is inside the array
 
-      if (
-        movieTriviaApp.functions.checkIfInputIsAString(
-          movieTriviaApp.userAnswer
-        )
-      ) {
-        if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
-          console.log("yes ur correct");
-          movieTriviaApp.pointsCounter++;
-        } else {
-          console.log("nah fam");
-        }
+      if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
+        console.log("yes ur correct");
+        movieTriviaApp.pointsCounter++;
+      } else {
+        console.log("nah fam");
       }
-      console.log("nah fam");
 
       break;
 
@@ -382,24 +353,17 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       //join all the companies into an array
       productionCompaniesArray.join(", ");
 
+      //check if user input is in the array
       if (
-        movieTriviaApp.functions.checkIfInputIsAString(
-          movieTriviaApp.userAnswer
+        productionCompaniesArray.includes(
+          movieTriviaApp.userAnswer.toLowerCase()
         )
       ) {
-        //check if user input is in the array
-        if (
-          productionCompaniesArray.includes(
-            movieTriviaApp.userAnswer.toLowerCase()
-          )
-        ) {
-          console.log("yes ur correct");
-          movieTriviaApp.pointsCounter++;
-        } else {
-          console.log("nah fam");
-        }
+        console.log("yes ur correct");
+        movieTriviaApp.pointsCounter++;
+      } else {
+        console.log("nah fam");
       }
-      console.log("nah fam");
 
       //// SET GAME OVER
       console.log("game over");

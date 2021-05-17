@@ -14,6 +14,7 @@ movieTriviaApp.selectedMovieId = "";
 movieTriviaApp.pointsCounter = 0;
 movieTriviaApp.userAnswer = "";
 
+///////// ALL THE API CALLS ////////////
 //get genre
 //api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
 movieTriviaApp.apiKey = "3c9a01ae287e63be5b9af537e6b1b3e3";
@@ -54,7 +55,8 @@ movieTriviaApp.getMovieInfo = () => {
     dataType: "json",
   })
     .then(function (results) {
-      movieTriviaApp.functions.displayFinalMovie(results);
+      // movieTriviaApp.functions.displayFinalMovie(results);
+      movieTriviaApp.functions.startTrivia(results);
     })
     .catch(function () {
       alert("broke");
@@ -63,6 +65,9 @@ movieTriviaApp.getMovieInfo = () => {
 
 //https://developers.themoviedb.org/3/discover/movie-discover
 // https://www.themoviedb.org/talk/5bf18ceec3a36818bb06991d
+
+//////////////// END OF API CALLS ///////////
+
 //display genre buttons
 movieTriviaApp.displayGenres = (genres) => {
   genres.forEach((genre) => {
@@ -123,10 +128,6 @@ movieTriviaApp.functions.loopMoviesLink = () => {
     movieTriviaApp.selectedMovieTitle = $(this)[0].firstElementChild.innerText;
     movieTriviaApp.selectedMovieId = $(this)[0].id;
 
-    // console.log(
-    //   movieTriviaApp.selectedMovieTitle,
-    //   movieTriviaApp.selectedMovieId
-    // );
     //use api to get movie info with cast for the trivia
     movieTriviaApp.getMovieInfo();
   });
@@ -164,12 +165,9 @@ movieTriviaApp.functions.showNextQuestion = () => {
   );
 };
 
+//// THIS IS NOT BEING USED RIGHT NOW
 //show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
 movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
-  movieTriviaApp.htmlElements.movieListContainer.empty();
-
-  console.log(finalMovieDetails);
-
   // loop thru array for production companies
   const productionCompaniesArray = [];
   //should create if statement to check if exist
@@ -189,12 +187,8 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
     ? finalMovieDetails.revenue
     : "didnt make money";
 
-  const finalMovie = `
-    <div class="d-flex flex-column justify-content-center align-items-center">
-      <img src="https://image.tmdb.org/t/p/w300/${
-        finalMovieDetails.backdrop_path
-      }" alt="">
-        <h4>${finalMovieDetails.original_title}</h4>
+  const gameOverMovieDetails = `
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
        <p>${finalMovieDetails.runtime} runtime,</p>
        <p>Company - ${productionCompaniesArray.join(", ")}</p>
        <p>Cast - ${movieCastsArray.join(", ")}</p>
@@ -205,12 +199,34 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
        <p>belongs_to_collection ${finalMovieDetails.belongs_to_collection}</p>
     </div>
   `;
-  movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
-  movieTriviaApp.functions.startTrivia(finalMovieDetails);
+  movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
 };
+
+/////////////////
+/////////////////
+/////////////////
 
 //user selects a movie, trivia begins
 movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
+  console.log(finalMovieDetails);
+
+  //To see answer
+
+  //remove all the movies in the container
+  movieTriviaApp.htmlElements.movieListContainer.empty();
+
+  //display some movie details
+  const finalMovie = `
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+      <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="">
+        <h4>${finalMovieDetails.original_title}</h4>
+    </div>
+  `;
+  movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
+
+  //show trivia
+  movieTriviaApp.htmlElements.triviaSection.show();
+
   //show first question
   movieTriviaApp.functions.showNextQuestion();
 
@@ -371,7 +387,9 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
          Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}
       `);
+      //hide user input
       movieTriviaApp.htmlElements.userInputForm.hide();
+
       break;
 
     default:
@@ -393,16 +411,18 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
 };
 
 movieTriviaApp.init = () => {
-  movieTriviaApp.getGenres();
-
-  //grab genre btns container
-
   movieTriviaApp.htmlElements.genreBtnsContainer = $(".genre-btns-container");
   movieTriviaApp.htmlElements.movieListContainer = $(".movie-list-container");
   movieTriviaApp.htmlElements.questionLabel = $("#question");
   movieTriviaApp.htmlElements.userInput = $("#userInput");
   movieTriviaApp.htmlElements.userInputForm = $("#userInputForm");
   movieTriviaApp.htmlElements.pointsCounterDisplay = $(".pointsCounter");
+  movieTriviaApp.htmlElements.triviaSection = $(".trivia");
+
+  //grab genre btns container
+  movieTriviaApp.getGenres();
+  //hide trivia section
+  movieTriviaApp.htmlElements.triviaSection.hide();
 };
 $(function () {
   movieTriviaApp.init();

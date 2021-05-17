@@ -15,7 +15,7 @@ movieTriviaApp.pointsCounter = 0;
 
 //list of questions
 movieTriviaApp.listOfQuestions = [
-  "year",
+  "Release Date",
   "runtime",
   "vote avger",
   "cast",
@@ -182,20 +182,20 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
-  movieTriviaApp.functions.startTrivia();
+  movieTriviaApp.functions.startTrivia(finalMovieDetails);
 };
 
 //user selects a movie, trivia begins
-movieTriviaApp.functions.startTrivia = () => {
+movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
   movieTriviaApp.htmlElements.questionLabel.text(
     movieTriviaApp.listOfQuestions[0]
   );
 
-  movieTriviaApp.functions.formSubmit();
+  movieTriviaApp.functions.formSubmit(finalMovieDetails);
 };
 
 //added event lister to form
-movieTriviaApp.functions.formSubmit = () => {
+movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
   movieTriviaApp.htmlElements.userInputForm.on("submit", function (e) {
     e.preventDefault();
 
@@ -205,13 +205,57 @@ movieTriviaApp.functions.formSubmit = () => {
       alert("input something fam");
     } else {
       console.log(movieTriviaApp.arrayOfAnswer);
-      movieTriviaApp.functions.checkAnswer();
+      movieTriviaApp.functions.checkAnswer(finalMovieDetails);
     }
   });
 };
+
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
-  if (finalMovieDetails.runtime === movieTriviaApp.arrayOfAnswer) {
+  movieTriviaApp.listOfQuestions = [
+    "Release Date",
+    "runtime",
+    "vote avger",
+    "Production Company",
+    "cast",
+  ];
+
+  // first question Release Date
+  // parseInt convert final movie release date just the year
+  finalMovieDetails.release_date = parseInt(finalMovieDetails.release_date);
+
+  //check if user input is a number, if it is convert to number so it will match answer
+  if (!Number.isNaN(movieTriviaApp.arrayOfAnswer)) {
+    movieTriviaApp.arrayOfAnswer = parseFloat(movieTriviaApp.arrayOfAnswer);
+  } else {
+    return movieTriviaApp.arrayOfAnswer;
+  }
+
+  // console.log(finalMovieDetails.release_date, movieTriviaApp.arrayOfAnswer);
+
+  //check release day
+  // if (finalMovieDetails.release_date === movieTriviaApp.arrayOfAnswer) {
+  //   console.log("yes ur correct");
+
+  //   movieTriviaApp.pointsCounter++;
+  // } else {
+  //   console.log("nah fam");
+  // }
+
+  // second question - Run Time
+  // if (finalMovieDetails.runtime === movieTriviaApp.arrayOfAnswer) {
+  //   console.log("yes ur correct");
+
+  //   movieTriviaApp.pointsCounter++;
+  // } else {
+  //   console.log("nah fam");
+  // }
+  // console.log(finalMovieDetails.runtime, movieTriviaApp.arrayOfAnswer);
+
+  //third question Vote Avger ( Change to round up or down  on nnumber)
+  finalMovieDetails.vote_average = Math.round(finalMovieDetails.vote_average);
+
+  if (finalMovieDetails.vote_average === movieTriviaApp.arrayOfAnswer) {
     console.log("yes ur correct");
 
     movieTriviaApp.pointsCounter++;
@@ -219,11 +263,15 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     console.log("nah fam");
   }
 
+  console.log(finalMovieDetails.vote_average, movieTriviaApp.arrayOfAnswer);
+  //fouth question (Production Company)
+  // fift quesiton (Cast)
+
   const result = `
   ${movieTriviaApp.pointsCounter} points so far
   );
   `;
-  movieTriviaApp.htmlElements.pointsCounterDisplay.append(result);
+  movieTriviaApp.htmlElements.pointsCounterDisplay.text(result);
   //show points
 };
 

@@ -12,8 +12,7 @@ movieTriviaApp.selectedMovieId = "";
 
 //counter
 movieTriviaApp.pointsCounter = 0;
-
-movieTriviaApp.arrayOfAnswer = [];
+movieTriviaApp.userAnswer = "";
 
 //get genre
 //api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
@@ -133,12 +132,17 @@ movieTriviaApp.functions.loopMoviesLink = () => {
   });
 };
 //////////////////////////////////////////////////////////////////////
+//focus input for ux, instead of mouse click
+movieTriviaApp.functions.setFocusToInput = () => {
+  movieTriviaApp.htmlElements.userInput.focus();
+};
 
 //list of questions
 movieTriviaApp.listOfQuestions = [
-  "Which Year was the movie released?",
-  "How long was the movie?",
-  "What was the vote average by user? - out of 10",
+  "Which year was the movie released?",
+  "How long was the movie in minutes?",
+  "What was the vote average by user? - Enter Number out of 10",
+  "Does this movie belong in a movie series? - Enter True of False",
   "Name one cast member?",
   "Name one production company",
 ];
@@ -146,7 +150,9 @@ movieTriviaApp.listOfQuestions = [
 movieTriviaApp.questionInArray = 0;
 
 //display question on page and show next question
-movieTriviaApp.functions.showQuestion = () => {
+movieTriviaApp.functions.showNextQuestion = () => {
+  //set focus to input
+  movieTriviaApp.functions.setFocusToInput();
   //show next question
   movieTriviaApp.htmlElements.questionLabel.text(
     movieTriviaApp.listOfQuestions[movieTriviaApp.questionInArray]
@@ -191,6 +197,7 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
        <p> Movie Release date -  ${finalMovieDetails.release_date} </p>
        <p>${finalMovieDetails.vote_average}</p>
        <p>Revenue ${movieRevenue}</p>
+       <p>belongs_to_collection ${finalMovieDetails.belongs_to_collection}</p>
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
@@ -199,7 +206,10 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
 
 //user selects a movie, trivia begins
 movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
-  movieTriviaApp.functions.showQuestion();
+  //show first question
+  movieTriviaApp.functions.showNextQuestion();
+
+  //init form submit listner
   movieTriviaApp.functions.formSubmit(finalMovieDetails);
 };
 
@@ -209,33 +219,35 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
     e.preventDefault();
 
     //show Next Question
-    movieTriviaApp.functions.showQuestion();
+    movieTriviaApp.functions.showNextQuestion();
 
-    movieTriviaApp.arrayOfAnswer = movieTriviaApp.htmlElements.userInput.val();
+    movieTriviaApp.userAnswer = movieTriviaApp.htmlElements.userInput.val();
 
-    if (!movieTriviaApp.arrayOfAnswer) {
+    if (!movieTriviaApp.userAnswer) {
       alert("input something fam");
     } else {
-      console.log(movieTriviaApp.arrayOfAnswer);
+      console.log(movieTriviaApp.userAnswer);
       movieTriviaApp.functions.checkAnswer(finalMovieDetails);
     }
   });
-
-  // clear user input
-  movieTriviaApp.htmlElements.userInput.val("");
 };
 
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
+  // clear user input
+  movieTriviaApp.htmlElements.userInput.val("");
+
+  let gameOver = false;
+
   // first question which Year was the movie released?
   // parseInt convert final movie release date just the year
   finalMovieDetails.release_date = parseInt(finalMovieDetails.release_date);
 
+  console.log(movieTriviaApp.userAnswer);
+
   //check if user input is a number, if it is convert to number so it will match answer
-  if (!Number.isNaN(movieTriviaApp.arrayOfAnswer)) {
-    movieTriviaApp.arrayOfAnswer = parseFloat(movieTriviaApp.arrayOfAnswer);
-  } else {
-    return movieTriviaApp.arrayOfAnswer;
+  if (Number(movieTriviaApp.userAnswer)) {
+    movieTriviaApp.userAnswer = parseFloat(movieTriviaApp.userAnswer);
   }
 
   // const questionIndexNumber = 0;
@@ -243,11 +255,11 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     //Which Year was the movie released?
     case 0:
       console.log("yelo question 1");
+      console.log(finalMovieDetails.release_date, movieTriviaApp.userAnswer);
 
-      // console.log(finalMovieDetails.release_date, movieTriviaApp.arrayOfAnswer);
-      if (finalMovieDetails.release_date === movieTriviaApp.arrayOfAnswer) {
+      //Check QUESTION VS ANSWER
+      if (finalMovieDetails.release_date === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
-
         movieTriviaApp.pointsCounter++;
       } else {
         console.log("nah fam");
@@ -257,61 +269,93 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     //How long was the movie?
     case 1:
       console.log("yelo question 2");
-      if (finalMovieDetails.runtime === movieTriviaApp.arrayOfAnswer) {
-        console.log("yes ur correct");
 
+      //Check QUESTION VS ANSWER
+      if (finalMovieDetails.runtime === movieTriviaApp.userAnswer) {
+        console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
       } else {
         console.log("nah fam");
       }
-      console.log(finalMovieDetails.runtime, movieTriviaApp.arrayOfAnswer);
+      console.log(finalMovieDetails.runtime, movieTriviaApp.userAnswer);
 
       break;
     // What was the vote average by user? - out of 10
     case 2:
       console.log("yelo question 3");
-
       //third question Vote Avger ( Change to round up or down  on nnumber)
       finalMovieDetails.vote_average = Math.round(
         finalMovieDetails.vote_average
       );
 
-      if (finalMovieDetails.vote_average === movieTriviaApp.arrayOfAnswer) {
+      //Check QUESTION VS ANSWER
+      if (finalMovieDetails.vote_average === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
-
         movieTriviaApp.pointsCounter++;
       } else {
         console.log("nah fam");
       }
 
-      console.log(finalMovieDetails.vote_average, movieTriviaApp.arrayOfAnswer);
-
+      console.log(finalMovieDetails.vote_average, movieTriviaApp.userAnswer);
       break;
-    // Name one cast member?
+    // Belongs to a collection
     case 3:
       console.log("yelo question 4");
+      //check if the movie belongs to a collection, if so set as var as true;
+      let movieSeriesTrueOrFalse = false;
+      if (finalMovieDetails.belongs_to_collection) {
+        movieSeriesTrueOrFalse = true;
+      }
+      //check user input,covert user input to boolean, yes or no
+      let userAnswerYesOrNo = "";
+      if (movieTriviaApp.userAnswer.toLowerCase() === "yes") {
+        userAnswerYesOrNo = true;
+      }
+      if (movieTriviaApp.userAnswer.toLowerCase() === "no") {
+        userAnswerYesOrNo = false;
+      }
+
+      //Check QUESTION VS ANSWER
+      if (movieSeriesTrueOrFalse === userAnswerYesOrNo) {
+        console.log(movieSeriesTrueOrFalse, userAnswerYesOrNo);
+        movieTriviaApp.pointsCounter++;
+      } else {
+        console.log("nah fam");
+      }
+
       break;
-    // Name one production company
+    // Name one cast member
     case 4:
       console.log("yelo question 5");
       break;
+    // Name production company
+    case 5:
+      console.log("yelo question 6");
+      break;
     default:
+      //when game is over show this.
+      console.log("game over");
+      gameOver = true;
+      movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
+         Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}
+      `);
+      movieTriviaApp.htmlElements.userInputForm.hide();
       break;
   }
 
   //fouth question (Production Company)
   // fift quesiton (Cast)
 
-  const result = `
-  ${movieTriviaApp.pointsCounter} points so far
-  );
-  `;
-  movieTriviaApp.htmlElements.pointsCounterDisplay.text(result);
-  //show points
+  //show points if game is not over yet.
+  if (!gameOver) {
+    movieTriviaApp.htmlElements.pointsCounterDisplay.html(
+      `${movieTriviaApp.pointsCounter} points so far`
+    );
+  }
 
   //Add one to array to move to the next question
   movieTriviaApp.questionInArray++;
-  movieTriviaApp.functions.showQuestion(movieTriviaApp.questionInArray);
+  movieTriviaApp.functions.showNextQuestion();
 };
 
 movieTriviaApp.init = () => {

@@ -15,11 +15,11 @@ movieTriviaApp.pointsCounter = 0;
 
 //list of questions
 movieTriviaApp.listOfQuestions = [
-  "Release Date",
-  "runtime",
-  "vote avger",
-  "cast",
-  "reverue",
+  "Which Year was the movie released?",
+  "How long was the movie?",
+  "What was the vote average by user? - out of 10",
+  "Name one cast member?",
+  "Name one production company",
 ];
 movieTriviaApp.arrayOfAnswer = [];
 
@@ -187,17 +187,21 @@ movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
 
 //user selects a movie, trivia begins
 movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
-  movieTriviaApp.htmlElements.questionLabel.text(
-    movieTriviaApp.listOfQuestions[0]
-  );
-
   movieTriviaApp.functions.formSubmit(finalMovieDetails);
 };
 
 //added event lister to form
 movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
+  let questionInArray = 0;
+
   movieTriviaApp.htmlElements.userInputForm.on("submit", function (e) {
     e.preventDefault();
+
+    //show next question
+    questionInArray++;
+    movieTriviaApp.htmlElements.questionLabel.text(
+      movieTriviaApp.listOfQuestions[questionInArray]
+    );
 
     movieTriviaApp.arrayOfAnswer = movieTriviaApp.htmlElements.userInput.val();
 
@@ -212,13 +216,13 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
 
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
-  movieTriviaApp.listOfQuestions = [
-    "Release Date",
-    "runtime",
-    "vote avger",
-    "Production Company",
-    "cast",
-  ];
+  // movieTriviaApp.listOfQuestions = [
+  //   "Release Date",
+  //   "runtime",
+  //   "vote avger",
+  //   "Production Company",
+  //   "cast",
+  // ];
 
   // first question Release Date
   // parseInt convert final movie release date just the year
@@ -232,7 +236,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   }
 
   // console.log(finalMovieDetails.release_date, movieTriviaApp.arrayOfAnswer);
-
   //check release day
   // if (finalMovieDetails.release_date === movieTriviaApp.arrayOfAnswer) {
   //   console.log("yes ur correct");

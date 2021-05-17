@@ -100,4 +100,23 @@ h1 {
 #userInputForm input {
   width: 100%;
 }
+
+#userInputForm input[type="submit"] {
+  border: 3px solid #00d4ff;
+  color: #00d4ff;
+  background-color: #002a33;
+  -webkit-transition-duration: 0.1s;
+          transition-duration: 0.1s;
+  -webkit-transition-timing-function: ease-in-out;
+          transition-timing-function: ease-in-out;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+#userInputForm input[type="submit"]:hover {
+  border-color: #33ddff;
+  color: #33ddff;
+  background-color: #005566;
+}
 /*# sourceMappingURL=style.css.map */

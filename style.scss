@@ -115,4 +115,21 @@ h1 {
   input {
     width: 100%;
   }
+
+  input[type="submit"] {
+    border: 3px solid darken($tertiary-blue, 0%);
+    color: darken($tertiary-blue, 0%);
+    background-color: darken($tertiary-blue, 40%);
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin: 5px;
+
+    &:hover {
+      border-color: lighten($tertiary-blue, 10%);
+      color: lighten($tertiary-blue, 10%);
+      background-color: darken($tertiary-blue, 30%);
+    }
+  }
 }

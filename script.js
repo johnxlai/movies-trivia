@@ -142,7 +142,7 @@ movieTriviaApp.listOfQuestions = [
   "Which year was the movie released?",
   "How long was the movie in minutes?",
   "What was the vote average by user? - Enter Number out of 10",
-  "Does this movie belong in a movie series? - Enter True of False",
+  "Does this movie belong in a movie series? - Enter Yes or No",
   "Name one cast member?",
   "Name one production company",
 ];
@@ -253,11 +253,10 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   // const questionIndexNumber = 0;
   switch (movieTriviaApp.questionInArray) {
     //Which Year was the movie released?
-    case 0:
-      console.log("yelo question 1");
-      console.log(finalMovieDetails.release_date, movieTriviaApp.userAnswer);
 
-      //Check QUESTION VS ANSWER
+    case 0:
+      console.log(finalMovieDetails.release_date, movieTriviaApp.userAnswer);
+      // Check QUESTION VS ANSWER
       if (finalMovieDetails.release_date === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
@@ -266,10 +265,9 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       }
 
       break;
+
     //How long was the movie?
     case 1:
-      console.log("yelo question 2");
-
       //Check QUESTION VS ANSWER
       if (finalMovieDetails.runtime === movieTriviaApp.userAnswer) {
         console.log("yes ur correct");
@@ -277,9 +275,9 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       } else {
         console.log("nah fam");
       }
-      console.log(finalMovieDetails.runtime, movieTriviaApp.userAnswer);
-
+      // console.log(finalMovieDetails.runtime, movieTriviaApp.userAnswer);
       break;
+
     // What was the vote average by user? - out of 10
     case 2:
       console.log("yelo question 3");
@@ -296,8 +294,8 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
         console.log("nah fam");
       }
 
-      console.log(finalMovieDetails.vote_average, movieTriviaApp.userAnswer);
       break;
+
     // Belongs to a collection
     case 3:
       console.log("yelo question 4");
@@ -326,11 +324,49 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
     // Name one cast member
     case 4:
-      console.log("yelo question 5");
+      console.log("Cast Member");
+      const movieCastsArray = [];
+      finalMovieDetails.credits.cast.forEach((cast) => {
+        movieCastsArray.push(cast.name.toLowerCase());
+      });
+
+      //join all the casts into an array
+      movieCastsArray.join(", ");
+
+      //check if user input is in the array
+      if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
+        console.log("yes ur correct");
+        movieTriviaApp.pointsCounter++;
+      } else {
+        console.log("nah fam");
+      }
+
       break;
+
     // Name production company
     case 5:
-      console.log("yelo question 6");
+      console.log("production company 6");
+
+      const productionCompaniesArray = [];
+
+      finalMovieDetails.production_companies.forEach((productionCompany) => {
+        productionCompaniesArray.push(productionCompany.name.toLowerCase());
+      });
+      //join all the companies into an array
+      productionCompaniesArray.join(", ");
+
+      //check if user input is in the array
+      if (
+        productionCompaniesArray.includes(
+          movieTriviaApp.userAnswer.toLowerCase()
+        )
+      ) {
+        console.log("yes ur correct");
+        movieTriviaApp.pointsCounter++;
+      } else {
+        console.log("nah fam");
+      }
+
       break;
     default:
       //when game is over show this.
@@ -342,9 +378,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       movieTriviaApp.htmlElements.userInputForm.hide();
       break;
   }
-
-  //fouth question (Production Company)
-  // fift quesiton (Cast)
 
   //show points if game is not over yet.
   if (!gameOver) {

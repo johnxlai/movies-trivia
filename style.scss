@@ -103,3 +103,16 @@ h1 {
     color: $tertiary-blue;
   }
 }
+
+// input
+#userInputForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  label,
+  input {
+    width: 100%;
+  }
+}

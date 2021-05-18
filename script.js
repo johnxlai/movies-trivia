@@ -218,31 +218,17 @@ movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
   movieTriviaApp.htmlElements.userInputForm.hide();
   console.log(showMoviesDetail);
 
-  // //loop thru array for cast members
-  // //should create if statement to check if exist
-  // const movieCastsArray = [];
-  // showMoviesDetail.credits.cast.forEach((cast) => {
-  //   movieCastsArray.push(cast.name);
-  // });
+  const gameOverMovieDetails = `
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+       <p>${showMoviesDetail.finalMovieDetails.runtime} runtime,</p>
+       <p>Company - ${showMoviesDetail.productionCompaniesArray}</p>
+       <p>Cast - ${showMoviesDetail.movieCastsArray}</p>
 
-  //if tehty didn't make money do say ddint' make any
-  // const movieRevenue = showMoviesDetail.revenue
-  //   ? showMoviesDetail.revenue
-  //   : "didnt make money";
-
-  // const gameOverMovieDetails = `
-  //   <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-  //      <p>${showMoviesDetail.runtime} runtime,</p>
-  //      <p>Company - ${productionCompaniesArray.join(", ")}</p>
-  //      <p>Cast - ${movieCastsArray.join(", ")}</p>
-
-  //      <p> Movie Release date -  ${showMoviesDetail.release_date} </p>
-  //      <p>${showMoviesDetail.vote_average}</p>
-  //      <p>Revenue ${movieRevenue}</p>
-  //      <p>belongs_to_collection ${showMoviesDetail.belongs_to_collection}</p>
-  //   </div>
-  // `;
-  // movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
+       <p> Movie Release date -  ${showMoviesDetail.finalMovieDetails.release_date} </p>
+       <p>${showMoviesDetail.finalMovieDetails.vote_average}</p>
+    </div>
+  `;
+  movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
 };
 
 /////////////////
@@ -255,8 +241,23 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   let gameOver = false;
 
   //vars so it could be passed to gameover function
-  const productionCompaniesArray = [];
   const movieCastsArray = [];
+
+  finalMovieDetails.credits.cast.forEach((cast) => {
+    movieCastsArray.push(cast.name.toLowerCase());
+  });
+
+  //join all the casts into an array
+  movieCastsArray.join(", ");
+
+  /// Production company
+  const productionCompaniesArray = [];
+  finalMovieDetails.production_companies.forEach((productionCompany) => {
+    productionCompaniesArray.push(productionCompany.name.toLowerCase());
+  });
+  //join all the companies into an array
+  productionCompaniesArray.join(", ");
+  //////////////////////
 
   console.log(movieTriviaApp.userAnswer);
 
@@ -337,12 +338,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
     // Name one cast member
     case 4:
-      finalMovieDetails.credits.cast.forEach((cast) => {
-        movieCastsArray.push(cast.name.toLowerCase());
-      });
-
-      //join all the casts into an array
-      movieCastsArray.join(", ");
       //check if user input is inside the array
 
       if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
@@ -357,12 +352,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     // Name production company
     case 5:
       console.log("production company 6");
-
-      finalMovieDetails.production_companies.forEach((productionCompany) => {
-        productionCompaniesArray.push(productionCompany.name.toLowerCase());
-      });
-      //join all the companies into an array
-      productionCompaniesArray.join(", ");
 
       //check if user input is in the array
       if (
@@ -386,6 +375,8 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       //show final movie details
       movieTriviaApp.functions.gameOver({
         finalMovieDetails,
+        movieCastsArray,
+        productionCompaniesArray,
       });
 
       break;

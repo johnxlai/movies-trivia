@@ -1,5 +1,4 @@
 body {
-  font-family: "Roboto", sans-serif;
   background-color: #001519;
   color: white;
   display: -webkit-box;
@@ -18,8 +17,19 @@ body {
   width: 100%;
 }
 
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+  font-family: "Kanit", sans-serif;
+}
+
 h1 {
-  color: #fe53bb;
+  color: white;
+  text-shadow: 2px 2px 2px #fe53bb;
+  font-size: 4rem;
 }
 
 .genre-btns-container {
@@ -44,6 +54,7 @@ h1 {
   padding: 10px 16px;
   border-radius: 10px;
   margin: 5px;
+  font-family: "Kanit", sans-serif;
 }
 
 .genre-btns-container button:hover {
@@ -56,9 +67,7 @@ h1 {
   border-color: #33ddff;
   color: #33ddff;
   background-color: #005566;
-  padding: 16px 16px;
   outline: 0;
-  border-radius: 12px;
 }
 
 .movie-list-container {
@@ -78,6 +87,10 @@ h1 {
 .movie-list-container h3 {
   font-size: 1rem;
   color: #00d4ff;
+}
+
+.movie-list-container h6 {
+  color: #fe53bb;
 }
 
 #userInputForm {
@@ -101,6 +114,21 @@ h1 {
   width: 100%;
 }
 
+#userInputForm label {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+#userInputForm input#userInput {
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid #fe53bb;
+  padding: 11px;
+  margin: 10px;
+  text-align: center;
+  color: #fe53bb;
+}
+
 #userInputForm input[type="submit"] {
   border: 3px solid #00d4ff;
   color: #00d4ff;
@@ -114,9 +142,15 @@ h1 {
   margin: 5px;
 }
 
-#userInputForm input[type="submit"]:hover {
+#userInputForm:hover {
   border-color: #33ddff;
   color: #33ddff;
   background-color: #005566;
+}
+
+.pointsCounter h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00d4ff;
 }
 /*# sourceMappingURL=style.css.map */

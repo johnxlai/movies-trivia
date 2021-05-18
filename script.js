@@ -177,8 +177,8 @@ movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
   //display some movie details
   const finalMovie = `
     <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-      <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="">
-        <h4>${finalMovieDetails.original_title}</h4>
+      <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="" class="mb-2">
+      <h6 class="mb-4">${finalMovieDetails.original_title}</h6>
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(finalMovie);
@@ -216,39 +216,33 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
 //show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
 movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
   movieTriviaApp.htmlElements.userInputForm.hide();
+  console.log(showMoviesDetail);
 
-  // loop thru array for production companies
-  const productionCompaniesArray = [];
-  //should create if statement to check if exist
-  showMoviesDetail.production_companies.forEach((productionCompany) => {
-    productionCompaniesArray.push(productionCompany.name);
-  });
-
-  //loop thru array for cast members
-  //should create if statement to check if exist
-  const movieCastsArray = [];
-  showMoviesDetail.credits.cast.forEach((cast) => {
-    movieCastsArray.push(cast.name);
-  });
+  // //loop thru array for cast members
+  // //should create if statement to check if exist
+  // const movieCastsArray = [];
+  // showMoviesDetail.credits.cast.forEach((cast) => {
+  //   movieCastsArray.push(cast.name);
+  // });
 
   //if tehty didn't make money do say ddint' make any
-  const movieRevenue = showMoviesDetail.revenue
-    ? showMoviesDetail.revenue
-    : "didnt make money";
+  // const movieRevenue = showMoviesDetail.revenue
+  //   ? showMoviesDetail.revenue
+  //   : "didnt make money";
 
-  const gameOverMovieDetails = `
-    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-       <p>${showMoviesDetail.runtime} runtime,</p>
-       <p>Company - ${productionCompaniesArray.join(", ")}</p>
-       <p>Cast - ${movieCastsArray.join(", ")}</p>
+  // const gameOverMovieDetails = `
+  //   <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+  //      <p>${showMoviesDetail.runtime} runtime,</p>
+  //      <p>Company - ${productionCompaniesArray.join(", ")}</p>
+  //      <p>Cast - ${movieCastsArray.join(", ")}</p>
 
-       <p> Movie Release date -  ${showMoviesDetail.release_date} </p>
-       <p>${showMoviesDetail.vote_average}</p>
-       <p>Revenue ${movieRevenue}</p>
-       <p>belongs_to_collection ${showMoviesDetail.belongs_to_collection}</p>
-    </div>
-  `;
-  movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
+  //      <p> Movie Release date -  ${showMoviesDetail.release_date} </p>
+  //      <p>${showMoviesDetail.vote_average}</p>
+  //      <p>Revenue ${movieRevenue}</p>
+  //      <p>belongs_to_collection ${showMoviesDetail.belongs_to_collection}</p>
+  //   </div>
+  // `;
+  // movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
 };
 
 /////////////////
@@ -386,13 +380,11 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       console.log("game over");
       gameOver = true;
       movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
-         Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}
+         <h3>Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}</h3>
       `);
 
       //show final movie details
       movieTriviaApp.functions.gameOver({
-        movieCastsArray,
-        productionCompaniesArray,
         finalMovieDetails,
       });
 

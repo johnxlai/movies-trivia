@@ -176,7 +176,7 @@ movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
 
   //display some movie details
   const finalMovie = `
-    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5 w-100">
       <img src="https://image.tmdb.org/t/p/w300/${finalMovieDetails.backdrop_path}" alt="" class="mb-2">
       <h6 class="mb-4">${finalMovieDetails.original_title}</h6>
     </div>
@@ -219,7 +219,7 @@ movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
   console.log(showMoviesDetail);
 
   const gameOverMovieDetails = `
-    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5 w-100">
        <p>${showMoviesDetail.finalMovieDetails.runtime} runtime,</p>
        <p>Company - ${showMoviesDetail.productionCompaniesArray}</p>
        <p>Cast - ${showMoviesDetail.movieCastsArray}</p>

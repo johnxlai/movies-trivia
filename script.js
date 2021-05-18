@@ -103,6 +103,8 @@ movieTriviaApp.functions.loopBtns = () => {
 //display selected movies
 movieTriviaApp.displayMovies = (movieList) => {
   movieTriviaApp.htmlElements.movieListContainer.empty();
+  movieTriviaApp.htmlElements.genreBtnsContainer.hide();
+
   movieList.forEach((movie) => {
     // console.log(movie);
 
@@ -165,52 +167,9 @@ movieTriviaApp.functions.showNextQuestion = () => {
   );
 };
 
-//// THIS IS NOT BEING USED RIGHT NOW
-//show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
-movieTriviaApp.functions.displayFinalMovie = (finalMovieDetails) => {
-  // loop thru array for production companies
-  const productionCompaniesArray = [];
-  //should create if statement to check if exist
-  finalMovieDetails.production_companies.forEach((productionCompany) => {
-    productionCompaniesArray.push(productionCompany.name);
-  });
-
-  //loop thru array for cast members
-  //should create if statement to check if exist
-  const movieCastsArray = [];
-  finalMovieDetails.credits.cast.forEach((cast) => {
-    movieCastsArray.push(cast.name);
-  });
-
-  //if tehty didn't make money do say ddint' make any
-  const movieRevenue = finalMovieDetails.revenue
-    ? finalMovieDetails.revenue
-    : "didnt make money";
-
-  const gameOverMovieDetails = `
-    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-       <p>${finalMovieDetails.runtime} runtime,</p>
-       <p>Company - ${productionCompaniesArray.join(", ")}</p>
-       <p>Cast - ${movieCastsArray.join(", ")}</p>
-
-       <p> Movie Release date -  ${finalMovieDetails.release_date} </p>
-       <p>${finalMovieDetails.vote_average}</p>
-       <p>Revenue ${movieRevenue}</p>
-       <p>belongs_to_collection ${finalMovieDetails.belongs_to_collection}</p>
-    </div>
-  `;
-  movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
-};
-
-/////////////////
-/////////////////
-/////////////////
-
 //user selects a movie, trivia begins
 movieTriviaApp.functions.startTrivia = (finalMovieDetails) => {
   console.log(finalMovieDetails);
-
-  //To see answer
 
   //remove all the movies in the container
   movieTriviaApp.htmlElements.movieListContainer.empty();
@@ -253,12 +212,57 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
   });
 };
 
+//Game over show results
+//show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
+movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
+  movieTriviaApp.htmlElements.userInputForm.hide();
+
+  // loop thru array for production companies
+  const productionCompaniesArray = [];
+  //should create if statement to check if exist
+  showMoviesDetail.production_companies.forEach((productionCompany) => {
+    productionCompaniesArray.push(productionCompany.name);
+  });
+
+  //loop thru array for cast members
+  //should create if statement to check if exist
+  const movieCastsArray = [];
+  showMoviesDetail.credits.cast.forEach((cast) => {
+    movieCastsArray.push(cast.name);
+  });
+
+  //if tehty didn't make money do say ddint' make any
+  const movieRevenue = showMoviesDetail.revenue
+    ? showMoviesDetail.revenue
+    : "didnt make money";
+
+  const gameOverMovieDetails = `
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+       <p>${showMoviesDetail.runtime} runtime,</p>
+       <p>Company - ${productionCompaniesArray.join(", ")}</p>
+       <p>Cast - ${movieCastsArray.join(", ")}</p>
+
+       <p> Movie Release date -  ${showMoviesDetail.release_date} </p>
+       <p>${showMoviesDetail.vote_average}</p>
+       <p>Revenue ${movieRevenue}</p>
+       <p>belongs_to_collection ${showMoviesDetail.belongs_to_collection}</p>
+    </div>
+  `;
+  movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
+};
+
+/////////////////
+
 //check if user input is correct
 movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   // clear user input
   movieTriviaApp.htmlElements.userInput.val("");
   //change to game over on last question
   let gameOver = false;
+
+  //vars so it could be passed to gameover function
+  const productionCompaniesArray = [];
+  const movieCastsArray = [];
 
   console.log(movieTriviaApp.userAnswer);
 
@@ -268,7 +272,7 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     case 0:
       // parseInt convert final movie release date just the year
       //finalMovie Grab Year and switch it to switch so it would match user input
-      let movieReleaseYear = parseInt(
+      const movieReleaseYear = parseInt(
         finalMovieDetails.release_date
       ).toString();
 
@@ -339,7 +343,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
     // Name one cast member
     case 4:
-      const movieCastsArray = [];
       finalMovieDetails.credits.cast.forEach((cast) => {
         movieCastsArray.push(cast.name.toLowerCase());
       });
@@ -360,8 +363,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     // Name production company
     case 5:
       console.log("production company 6");
-
-      const productionCompaniesArray = [];
 
       finalMovieDetails.production_companies.forEach((productionCompany) => {
         productionCompaniesArray.push(productionCompany.name.toLowerCase());
@@ -387,8 +388,13 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
          Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}
       `);
-      //hide user input
-      movieTriviaApp.htmlElements.userInputForm.hide();
+
+      //show final movie details
+      movieTriviaApp.functions.gameOver({
+        movieCastsArray,
+        productionCompaniesArray,
+        finalMovieDetails,
+      });
 
       break;
 

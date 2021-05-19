@@ -218,10 +218,14 @@ movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
   movieTriviaApp.htmlElements.userInputForm.hide();
   console.log(showMoviesDetail);
 
+  productionCompaniesArray = showMoviesDetail.productionCompaniesArray.map(
+    (company) => company.toUpperCase()
+  );
+
   const gameOverMovieDetails = `
     <div class="d-flex flex-column justify-content-center align-items-center mt-5 w-100">
        <p>${showMoviesDetail.finalMovieDetails.runtime} runtime,</p>
-       <p>Company - ${showMoviesDetail.productionCompaniesArray}</p>
+       <p>Company - ${productionCompaniesArray}</p>
        <p>Cast - ${showMoviesDetail.movieCastsArray}</p>
 
        <p> Movie Release date -  ${showMoviesDetail.finalMovieDetails.release_date} </p>
@@ -241,19 +245,19 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
   let gameOver = false;
 
   //vars so it could be passed to gameover function
-  const movieCastsArray = [];
+  let movieCastsArray = [];
 
   finalMovieDetails.credits.cast.forEach((cast) => {
-    movieCastsArray.push(cast.name.toLowerCase());
+    movieCastsArray.push(cast.name);
   });
 
   //join all the casts into an array
   movieCastsArray.join(", ");
 
   /// Production company
-  const productionCompaniesArray = [];
+  let productionCompaniesArray = [];
   finalMovieDetails.production_companies.forEach((productionCompany) => {
-    productionCompaniesArray.push(productionCompany.name.toLowerCase());
+    productionCompaniesArray.push(productionCompany.name);
   });
   //join all the companies into an array
   productionCompaniesArray.join(", ");
@@ -261,7 +265,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
 
   console.log(movieTriviaApp.userAnswer);
 
-  // const questionIndexNumber = 0;
   switch (movieTriviaApp.questionInArray) {
     //Which Year was the movie released?
     case 0:
@@ -338,8 +341,11 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
     // Name one cast member
     case 4:
-      //check if user input is inside the array
+      //lowercase everything to check
+      movieCastsArray = movieCastsArray.map((cast) => cast.toLowerCase());
+      console.log(movieCastsArray);
 
+      //check if user input is inside the array
       if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
         console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
@@ -352,7 +358,10 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     // Name production company
     case 5:
       console.log("production company 6");
-
+      //lowercase to check
+      productionCompaniesArray = productionCompaniesArray.map((company) =>
+        company.toLowerCase()
+      );
       //check if user input is in the array
       if (
         productionCompaniesArray.includes(
@@ -382,7 +391,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       break;
 
     default:
-      //when game is over show this.
       console.log("something is not right in the switch statement");
       break;
   }

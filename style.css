@@ -142,7 +142,7 @@ h1 {
   margin: 5px;
 }
 
-#userInputForm:hover {
+#userInputForm input[type="submit"]:hover {
   border-color: #33ddff;
   color: #33ddff;
   background-color: #005566;

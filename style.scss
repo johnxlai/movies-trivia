@@ -143,12 +143,12 @@ h1 {
     padding: 10px 16px;
     border-radius: 10px;
     margin: 5px;
-  }
 
-  &:hover {
-    border-color: lighten($tertiary-blue, 10%);
-    color: lighten($tertiary-blue, 10%);
-    background-color: darken($tertiary-blue, 30%);
+    &:hover {
+      border-color: lighten($tertiary-blue, 10%);
+      color: lighten($tertiary-blue, 10%);
+      background-color: darken($tertiary-blue, 30%);
+    }
   }
 }
 

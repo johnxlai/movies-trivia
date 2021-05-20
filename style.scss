@@ -114,11 +114,6 @@ h1 {
   align-items: center;
   flex-direction: column;
 
-  label,
-  input {
-    width: 100%;
-  }
-
   label {
     font-size: 2rem;
     font-weight: bold;
@@ -152,7 +147,7 @@ h1 {
   }
 }
 
-.pointsCounter {
+.gameOver {
   h3 {
     font-size: 2rem;
     font-weight: bold;

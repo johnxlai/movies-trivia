@@ -216,20 +216,18 @@ movieTriviaApp.functions.formSubmit = (finalMovieDetails) => {
 //show selected movies with year, cast , popularity, release date, vote_average, does it belong to a collection
 movieTriviaApp.functions.gameOver = (showMoviesDetail) => {
   movieTriviaApp.htmlElements.userInputForm.hide();
+  movieTriviaApp.htmlElements.pointsCounterDisplay.hide();
   console.log(showMoviesDetail);
 
-  productionCompaniesArray = showMoviesDetail.productionCompaniesArray.map(
-    (company) => company.toUpperCase()
-  );
-
   const gameOverMovieDetails = `
-    <div class="d-flex flex-column justify-content-center align-items-center mt-5 w-100">
-       <p>${showMoviesDetail.finalMovieDetails.runtime} runtime,</p>
-       <p>Company - ${productionCompaniesArray}</p>
-       <p>Cast - ${showMoviesDetail.movieCastsArray}</p>
+    <div class="d-flex flex-column justify-content-center align-items-center mt-5 w-100 gameOver">
+     <h3>Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}</h3>
+      <p>Movie Runtime: ${showMoviesDetail.finalMovieDetails.runtime} mins</p>
+       <p>Production Company: ${showMoviesDetail.productionCompaniesArray}</p>
+       <p>Cast Members: ${showMoviesDetail.movieCastsArray}</p>
 
-       <p> Movie Release date -  ${showMoviesDetail.finalMovieDetails.release_date} </p>
-       <p>${showMoviesDetail.finalMovieDetails.vote_average}</p>
+       <p> Movie Release date:  ${showMoviesDetail.finalMovieDetails.release_date} </p>
+       <p>Vote Average by user: ${showMoviesDetail.finalMovieDetails.vote_average}</p>
     </div>
   `;
   movieTriviaApp.htmlElements.movieListContainer.append(gameOverMovieDetails);
@@ -342,11 +340,17 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     // Name one cast member
     case 4:
       //lowercase everything to check
-      movieCastsArray = movieCastsArray.map((cast) => cast.toLowerCase());
-      console.log(movieCastsArray);
+      const movieCastsArrayLowerCase = movieCastsArray.map((cast) =>
+        cast.toLowerCase()
+      );
+      console.log(movieCastsArrayLowerCase);
 
       //check if user input is inside the array
-      if (movieCastsArray.includes(movieTriviaApp.userAnswer.toLowerCase())) {
+      if (
+        movieCastsArrayLowerCase.includes(
+          movieTriviaApp.userAnswer.toLowerCase()
+        )
+      ) {
         console.log("yes ur correct");
         movieTriviaApp.pointsCounter++;
       } else {
@@ -359,12 +363,12 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
     case 5:
       console.log("production company 6");
       //lowercase to check
-      productionCompaniesArray = productionCompaniesArray.map((company) =>
-        company.toLowerCase()
+      const productionCompaniesArrayLowerCase = productionCompaniesArray.map(
+        (company) => company.toLowerCase()
       );
       //check if user input is in the array
       if (
-        productionCompaniesArray.includes(
+        productionCompaniesArrayLowerCase.includes(
           movieTriviaApp.userAnswer.toLowerCase()
         )
       ) {
@@ -377,9 +381,6 @@ movieTriviaApp.functions.checkAnswer = (finalMovieDetails) => {
       //// SET GAME OVER
       console.log("game over");
       gameOver = true;
-      movieTriviaApp.htmlElements.pointsCounterDisplay.html(`
-         <h3>Thank you for playing, your final score is ${movieTriviaApp.pointsCounter} out of ${movieTriviaApp.listOfQuestions.length}</h3>
-      `);
 
       //show final movie details
       movieTriviaApp.functions.gameOver({
